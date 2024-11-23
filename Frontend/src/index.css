@@ -1,20 +1,159 @@
+/* Globales */
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-:root {
-  font-family: 'Lato', sans-serif;
-  color-scheme: light dark;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+
+@layer components {
+  .all-\[unset\] {
+    all: unset;
+  }
 }
 
-body {
-  display: grid;
-  place-items: center;
-  height: 100vh;
-  margin: 0;
+/* Colores de texto */
+.text-primary {
+  color: var(--chetwode-blue400);
+}
+
+.text-secondary {
+  color: var(--cod-gray300);
+}
+
+.text-portage {
+  color: var(--portage-50);
+}
+
+/* Estilo del fondo del modal */
+.modal-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 50; /* Asegúrate de que el modal esté por encima de otros elementos */
+  top: 100px; /* Ajusta la posición del modal más abajo */
+}
+
+/* Estilo del contenido del modal */
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  width: 376px;
+  padding: 24px;
+  background-color: #1a1a1a; /* Fondo oscuro para la tarjeta */
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  color: white;
+}
+
+/* Estilo de la cabecera del modal */
+.modal-header {
+  display: flex;
+  flex-direction: column; /* Asegura que los elementos se alineen en columna */
+  justify-content: flex-start; /* Asegura que los elementos se alineen en la parte superior */
+  margin-bottom: 16px;
+}
+
+.modal-header label,
+.modal-footer label {
+  display: block; /* Asegura que los labels sean bloques */
+  margin-bottom: 8px; /* Espacio entre label y input */
+  color: #e0e0e0;
+}
+
+/* Estilo del título dentro del modal */
+.modal-title {
+  flex: 1;
+  margin-left: 0px; /* Alinea el título con los otros campos */
+  font-size: 1.125rem; /* 18px */
+  font-weight: 600;
+  color: #e0e0e0;
+  margin-bottom: 8px; /* Espacio inferior para separar del input de descripción */
+}
+
+/* Estilo del campo de texto para título */
+.modal-title input {
+  width: 100%;
+  padding: 8px;
+  background-color: #333;
+  border: 1px solid #555;
+  color: #e0e0e0;
+  border-radius: 8px;
+}
+
+/* Estilo de la descripción dentro del modal */
+.modal-description {
+  font-size: 0.875rem; /* 14px */
+  color: #a0a0a0;
+  margin-bottom: 48px;
+}
+
+/* Estilo del campo de texto para descripción */
+.modal-description textarea {
+  width: 100%; /* Asegura que el campo ocupe todo el ancho */
+  height: 120px; /* Altura del campo para descripción */
+  padding: 8px;
+  background-color: #333;
+  border: 1px solid #555;
+  color: #e0e0e0;
+  border-radius: 8px;
+  resize: none;
+}
+
+/* Ajustes de la vista del pie del modal */
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.modal-footer .category {
+  display: flex;
+  align-items: center;
+}
+
+.modal-footer .category span {
+  font-size: 0.875rem; /* 14px */
+  color: #a0a0a0;
+  margin-right: 16px;
+}
+
+.modal-footer .category .tag {
+  background-color: #3a3a3a;
+  border-radius: 8px;
+  padding: 4px 12px;
+  color: #a0a0a0;
+  font-size: 0.75rem; /* 12px */
+}
+
+.modal-footer .delete-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgba(134, 135, 231, 1);
+  font-size: 0.875rem;
+  font-weight: bold;
+  width: 100%;
+  border: none;
+}
+
+.modal-footer .delete-button:hover {
+  color: #d32f2f;
+}
+
+/* Variables de color */
+:root {
+  --chetwode-blue400: rgba(134, 135, 231, 1);
+  --cod-gray300: rgba(176, 176, 176, 1);
+  --cod-gray500: rgba(109, 109, 109, 1);
+  --cod-gray900: rgba(61, 61, 61, 1);
+  --coral-red500: rgba(255, 73, 73, 1);
+  --portage-50: rgba(237, 243, 255, 1);
+  --primary-color: rgba(134, 135, 231, 1);
 }

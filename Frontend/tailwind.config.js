@@ -4,6 +4,19 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+
+  safelist: [
+    'bg-work', 
+    'bg-university', 
+    'bg-sport', 
+    'bg-design',
+    'bg-social', 
+    'bg-music', 
+    'bg-health', 
+    'bg-movie', 
+    'bg-home'
+  ],
+  
   theme: {
     screens: {
       sm: '375px',
@@ -12,18 +25,17 @@ export default {
       xl: '1440px',
     },
     colors: {
-      'category': {
-          grocery:'#f0f2fd',
-          sport:'#80ffff',
-          work:'#ff9680',
-          design:'#80ffd9',
-          university:'#809cff',
-          social: '#ff80eb',
-          music: '#fc80ff',
-          health: '#80ffa3',
-          movie: '#80d1ff',
-          home: '#ff8080',
-      },
+      
+      grocery:'#f0f2fd',
+      sport:'#80ffff',
+      work:'#ff9680',
+      design:'#80ffd9',
+      university:'#809cff',
+      social: '#ff80eb',
+      music: '#fc80ff',
+      health: '#80ffa3',
+      movie: '#80d1ff',
+      home: '#ff8080',
       'violet':{
         50: '#f0f2fd',
         100: '#e4e7fb',
@@ -87,4 +99,6 @@ export default {
   },
   plugins: [],
 }
+
+
 

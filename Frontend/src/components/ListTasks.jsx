@@ -23,7 +23,7 @@ function ListTasks() {
       {tasks.length === 0 ? (
         <ListEmpty />
       ) : (
-        <div className="flex gap-2 w-full px-5">
+        <div className="flex flex-wrap w-full gap-2 px-5">
           {tasks.map((task) => (
             <CardTask key={task.id} task={task} />
           ))}

@@ -4,6 +4,7 @@ import {
   ClockIcon,
   TagIcon,
   AcademicCapIcon,
+  TrashIcon,
 } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
 
@@ -13,7 +14,7 @@ function CardTask({ task }) {
   };
 
   return (
-    <div className="bg-gray-700 w-[376px] p-4 rounded-xl flex flex-col justify-between gap-3">
+    <div className="bg-gray-700 w-full md:w-[360px] p-4 rounded-xl flex flex-col justify-between gap-3">
       {/* Nombre de la tarea */}
       <div className="flex justify-between items-center w-full">
         {/* Boton para marcar como completada */}
@@ -23,7 +24,7 @@ function CardTask({ task }) {
 
         <h3 className="text-gray-50 text-xl">{task.title}</h3>
 
-        <Link to={"/form-editar-tarea"}>
+        <Link to={`/form-editar-tarea/${task.id}`}>
           <PencilSquareIcon className="w-8 h-8 text-gray-50" />
         </Link>
       </div>
@@ -53,6 +54,15 @@ function CardTask({ task }) {
           <span>Universidad</span>
         </div>
       </div>
+
+      {/* Boton para ELIMINAR la tarea */}
+      <Link
+        to={`/eliminar-tarea/${task.id}`}
+        className="flex justify-center items-center w-full h-9 rounded-md text-red-500 font-light"
+      >
+        <TrashIcon className="w-5 h-5" />
+        Eliminar
+      </Link>
     </div>
   );
 }

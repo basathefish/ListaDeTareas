@@ -1,37 +1,11 @@
 import { TagIcon, PaperAirplaneIcon } from "@heroicons/react/24/outline";
 import CancelButton from "./CancelButton";
 import { categories } from "../utils/categories";
-import { useAddTask } from "../hooks/useAddTask";
-import { useEditTask } from "../hooks/useEditTask";
+import { addTask, editTask } from "../api/task";
 
 function FormTask({ task }) {
-  const { title, description, category_id } = task ? task : {};
-  const { addTask } = useAddTask();
-  const { editTask } = useEditTask();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const data = new FormData(e.target);
-    const newTask = Object.fromEntries(data.entries());
-    const date = new Date();
-
-    const task = {
-      title: newTask.title,
-      description: newTask.description,
-      category_id: parseInt(newTask.category),
-      status: "pendiente",
-      user_id: 1,
-      due_date: date.toISOString(),
-    };
-
-    if (task) {
-      if (task.id) {
-        editTask(task);
-      } else {
-        addTask(task);
-      }
-    }
-  };
+  const handleSubmit = task?.id ? editTask : addTask;
 
   return (
     <form
@@ -47,7 +21,7 @@ function FormTask({ task }) {
         id="title"
         type="text"
         name="title"
-        defaultValue={title}
+        defaultValue={task?.title}
         className="bg-gray-600 text-lg font-normal w-full px-4 py-2 rounded outline-none"
         placeholder="Título de la Tarea"
         required
@@ -60,7 +34,7 @@ function FormTask({ task }) {
           id="description"
           type="text"
           name="description"
-          defaultValue={description}
+          defaultValue={task?.description}
           className="bg-gray-600 text-lg font-normal w-full px-4 py-2 rounded outline-none resize-none h-40"
           placeholder="Descripcion de la Tarea"
           required
@@ -75,8 +49,9 @@ function FormTask({ task }) {
         <select
           id="category"
           name="category"
-          defaultValue={category_id}
+          defaultValue={`${task?.category_id}`}
           className="bg-gray-600 text-lg font-normal w-full px-4 py-2 rounded outline-none"
+          required
         >
           <option value="">Seleccionar categoria</option>
           {categories.map((category) => (

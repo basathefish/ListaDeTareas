@@ -2,14 +2,13 @@ import { useParams } from "react-router-dom";
 import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
 import CancelButton from "../components/CancelButton";
 import { useGetTask } from "../hooks/useGetTask";
-import useDeleteTask from "../hooks/useDeleteTask";
+import { deleteTask } from "../api/task";
 
 const DeleteTask = () => {
   // Obtener el id de la tarea a eliminar
   const { id } = useParams();
   const idTask = parseInt(id);
   const { task } = useGetTask(idTask);
-  const { deleteTask } = useDeleteTask();
 
   const handleSubmit = (e) => {
     e.preventDefault();

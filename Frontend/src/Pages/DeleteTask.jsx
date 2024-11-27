@@ -1,28 +1,23 @@
 import { useParams } from "react-router-dom";
 import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
 import CancelButton from "../components/CancelButton";
+import { useGetTask } from "../hooks/useGetTask";
+import { deleteTask } from "../api/task";
 
 const DeleteTask = () => {
   // Obtener el id de la tarea a eliminar
   const { id } = useParams();
+  const idTask = parseInt(id);
+  const { task } = useGetTask(idTask);
 
-  // Obtener la tarea a eliminar
-
-  const task = {
-    id: 1,
-    title: "Tarea de Matemáticas",
-    description: "Resolver los ejercicios del 1 al 10 de la página 50",
-    category: "university",
-  };
-
-  const deleteTask = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Tarea eliminada");
+    deleteTask(idTask);
   }
 
   return (
     <div className="bg-gray-950 absolute flex justify-center items-center w-full h-full bg-opacity-70 p-4">
-      <form onSubmit={deleteTask} className="bg-gray-900 text-gray-50 p-2 rounded-2xl w-80">
+      <form onSubmit={handleSubmit} className="bg-gray-900 text-gray-50 p-2 rounded-2xl w-80">
         {/* Header del Modal */}
         <h2 className="text-center font-bold p-2 text-xl border-b-2 border-b-gray-400">
           Eliminar tarea

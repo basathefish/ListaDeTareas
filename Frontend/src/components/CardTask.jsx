@@ -3,12 +3,13 @@ import {
   PencilSquareIcon,
   ClockIcon,
   TagIcon,
-  AcademicCapIcon,
   TrashIcon,
 } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
+import { categories } from "../utils/categories";
 
 function CardTask({ task }) {
+
   const completeTask = () => {
     console.log("Tarea completada");
   };
@@ -39,7 +40,7 @@ function CardTask({ task }) {
           <span className="text-gray-50">Fecha de creacion:</span>
         </div>
         <span className="bg-gray-500 w-28 h-9 text-center py-2 rounded">
-          14/08/2024
+          {task.due_date.split("T")[0]}
         </span>
       </div>
 
@@ -49,9 +50,9 @@ function CardTask({ task }) {
           <TagIcon className="w-5 h-5" />
           <span className="text-gray-50">Categoria:</span>
         </div>
-        <div className="bg-university flex justify-center items-center w-28 h-9 text-center rounded">
-          <AcademicCapIcon className="w-5 h-5" />
-          <span>Universidad</span>
+        <div className={`bg-${categories[task.category_id].color} flex justify-center items-center w-28 h-9 text-center rounded`}>
+          {categories[task.category_id].icon} 
+          <span>{categories[task.category_id].name}</span>
         </div>
       </div>
 

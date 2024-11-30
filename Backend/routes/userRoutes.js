@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../config/db');
+const { verifyToken } = require('../middleware/verifyToken');
+const userController = require('../controllers/userController');
 
-//obtener todos los usuarios
+//Obtener todos los usuarios
 router.get('/', (req, res) => {
     const query = 'SELECT * FROM User';
     db.query(query, (err, results) => {
@@ -11,34 +13,48 @@ router.get('/', (req, res) => {
     });
 });
 
-//crear un nuevo usuario
-router.post('/', (req, res) => {
-    const { name, email, password } = req.body;
-    const query = 'INSERT INTO User (name, email, password) VALUES (?, ?, ?)';
-    db.query(query, [name, email, password], (err, result) => {
+//Registrar usuario
+router.post('/register', userController.register);
+
+//Login
+router.post('/login', userController.login);
+
+//Obtener el perfil del usuario actual
+router.get('/profile', verifyToken, (req, res) => {
+    const userId = req.user.id;
+    const query = 'SELECT * FROM User WHERE id = ?';
+    db.query(query, [userId], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
-        res.status(201).json({ id: result.insertId, name, email });
+        if (results.length === 0) {
+            return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
+        res.json(results[0]);
     });
 });
 
-//actualizar un usuario
-router.put('/:id', (req, res) => {
-    const { id } = req.params;
+//Actualizar el perfil del usuario actual
+router.put('/profile', verifyToken, (req, res) => {
+    const userId = req.user.id;
     const { name, email, password } = req.body;
-    const query = 'UPDATE User SET name = ?, email = ?, password = ? WHERE id = ?';
-    db.query(query, [name, email, password, id], (err, result) => {
+
+    bcrypt.hash(password, 10, (err, hashedPassword) => {
         if (err) return res.status(500).json({ error: err.message });
-        res.json({ message: 'User updated' });
+
+        const query = 'UPDATE User SET name = ?, email = ?, password = ? WHERE id = ?';
+        db.query(query, [name, email, hashedPassword, userId], (err, result) => {
+            if (err) return res.status(500).json({ error: err.message });
+            res.json({ message: 'Usuario actualizado' });
+        });
     });
 });
 
-//eliminar un usuario
+//Eliminar un usuario
 router.delete('/:id', (req, res) => {
     const { id } = req.params;
     const query = 'DELETE FROM User WHERE id = ?';
     db.query(query, [id], (err) => {
         if (err) return res.status(500).json({ error: err.message });
-        res.json({ message: 'User deleted' });
+        res.json({ message: 'Usuario eliminado' });
     });
 });
 

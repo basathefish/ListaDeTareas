@@ -29,7 +29,7 @@ function FormTask({ task }) {
 
       {/* Descripción de la Tarea */}
       <label htmlFor="title" className="text-xl font-bold">
-        Descrición de la Tarea
+        Descripción de la Tarea
         <textarea
           id="description"
           type="text"

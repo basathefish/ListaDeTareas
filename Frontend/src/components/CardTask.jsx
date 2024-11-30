@@ -37,7 +37,7 @@ function CardTask({ task }) {
       <div className="flex justify-between items-center text-gray-50">
         <div className="flex items-center gap-2">
           <ClockIcon className="w-5 h-5" />
-          <span className="text-gray-50">Fecha de creacion:</span>
+          <span className="text-gray-50">Fecha de creación:</span>
         </div>
         <span className="bg-gray-500 w-28 h-9 text-center py-2 rounded">
           {task.due_date.split("T")[0]}
@@ -48,7 +48,7 @@ function CardTask({ task }) {
       <div className="flex justify-between items-center text-gray-50">
         <div className="flex items-center gap-2">
           <TagIcon className="w-5 h-5" />
-          <span className="text-gray-50">Categoria:</span>
+          <span className="text-gray-50">Categoría:</span>
         </div>
         <div className={`bg-${categories[task.category_id].color} flex justify-center items-center w-28 h-9 text-center rounded`}>
           {categories[task.category_id].icon} 

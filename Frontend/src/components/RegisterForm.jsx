@@ -15,9 +15,9 @@ const RegisterForm = () => {
     const newErrors = {};
 
     // Validación del nombre de usuario
-    const name = e.target.email.value;
+    const name = e.target.name.value;
     if (!name) {
-      newErrors.email = "El correo electrónico es obligatorio.";
+      newErrors.name = "El nombre de usuario es obligatorio.";
     }
 
     // Validación del email
@@ -45,6 +45,7 @@ const RegisterForm = () => {
       try {
         // Llamada a la API de registro
         await registerUser(name, email, password);
+        console.log(name, email, password)
 
         // Establecer mensaje de éxito y redirigir
         setSuccessMessage("¡Registro exitoso! Ahora puedes iniciar sesión.");

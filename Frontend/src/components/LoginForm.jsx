@@ -42,7 +42,7 @@ const LoginForm = () => {
         } else {
           setErrors({ general: "Credenciales incorrectas, por favor intente nuevamente." });
         }
-      } catch (error) {
+      } catch (error) { //toma el mensaje de error recibido {desde el back viene}
         console.error(error);
         setErrors({ general: error.message });
       } finally {

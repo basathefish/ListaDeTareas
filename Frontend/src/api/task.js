@@ -1,9 +1,18 @@
-export const fetchTasks = async (user_id) => {
+import { getToken } from "./auth";
+
+//obtener tareas de x usuario, {pasa el token, el id se deduce en el back}
+export const fetchTasks = async () => {
   try {
-    const response = await fetch(`http://localhost:5000/api/tareas?user_id=${user_id}`, {
+    const token = getToken(); // Obtener el token desde el almacenamiento local
+    if (!token) {
+      throw new Error("No se encontró un token de autenticación");
+    }
+
+    const response = await fetch("http://localhost:5000/api/tareas", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // Enviar el token en la cabecera
       },
     });
 
@@ -12,7 +21,7 @@ export const fetchTasks = async (user_id) => {
     }
 
     const tasks = await response.json();
-    console.log("Tareas obtenidas:", tasks);
+    console.log("Tareas obtenidas:", tasks); //borrar/comentar despues
     return tasks;
   } catch (error) {
     console.error("Error al obtener las tareas:", error);

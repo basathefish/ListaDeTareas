@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../config/db");
+const {verifyToken} = require("../middleware/verifyToken");
 
 //obtener todas las tareas
 router.get("/all", (req, res) => {
@@ -15,20 +16,16 @@ router.get("/all", (req, res) => {
   });
 });
 
-//obtener todas las tareas del usuario user_id
-router.get("/", (req, res) => {
-  const { user_id } = req.query; // Obtener el user_id de los query parameters
-
-  if (!user_id) {
-    return res.status(400).json({ message: "El user_id es obligatorio" });
-  }
+router.get("/", verifyToken, (req, res) => {
+  const user_id = req.user.id;
+  console.log(user_id)
 
   const query = "SELECT * FROM Task WHERE user_id = ?";
 
   db.query(query, [user_id], (err, results) => {
     if (err) {
       console.error("Error al obtener las tareas:", err);
-      return res.status(500).send("Error al obtener las tareas");
+      return res.status(500).json({ message: "Error al obtener las tareas" });
     }
 
     res.json(results);

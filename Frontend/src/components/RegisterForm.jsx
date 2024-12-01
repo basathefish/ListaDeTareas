@@ -1,17 +1,24 @@
 import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { registerUser } from "../api/auth"; 
+import { registerUser } from "../api/auth";
 
 const RegisterForm = () => {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");  
-  const navigate = useNavigate();  
-  
+  const [successMessage, setSuccessMessage] = useState("");
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
+    setErrors({})
     e.preventDefault();
     const newErrors = {};
+
+    // Validación del nombre de usuario
+    const name = e.target.email.value;
+    if (!name) {
+      newErrors.email = "El correo electrónico es obligatorio.";
+    }
 
     // Validación del email
     const email = e.target.email.value;
@@ -37,15 +44,15 @@ const RegisterForm = () => {
       setIsLoading(true);
       try {
         // Llamada a la API de registro
-        await registerUser(email, password);
-        
+        await registerUser(name, email, password);
+
         // Establecer mensaje de éxito y redirigir
         setSuccessMessage("¡Registro exitoso! Ahora puedes iniciar sesión.");
         setTimeout(() => {
-          navigate("/login");  // Redirigir al login después de 2 segundos
+          window.location.reload();  // Redirigir al login después de 2 segundos
         }, 2000);
-      } catch (error) {
-        setErrors({ general: "Error al registrar el usuario, por favor intente nuevamente." });
+      } catch (err) {
+        setErrors({ general: err.message });
       } finally {
         setIsLoading(false);
       }
@@ -59,6 +66,20 @@ const RegisterForm = () => {
     >
       {/* Mensaje de éxito */}
       {successMessage && <p className="text-green-500 text-sm">{successMessage}</p>}
+
+      {/* Name */}
+      <label htmlFor="name" className="text-xl font-bold">
+        Nombre de Usuario
+      </label>
+      <input
+        id="name"
+        type="name"
+        name="name"
+        className="bg-gray-600 text-lg font-normal w-full px-4 py-2 rounded outline-none"
+        placeholder="Introduce tu correo"
+        required
+      />
+      {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
 
       {/* Email */}
       <label htmlFor="email" className="text-xl font-bold">

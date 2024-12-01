@@ -3,7 +3,7 @@ const router = express.Router();
 const db = require("../config/db");
 
 //obtener todas las tareas
-router.get("/", (req, res) => {
+router.get("/all", (req, res) => {
   const query = "SELECT * FROM Task";
 
   db.query(query, (err, results) => {
@@ -11,6 +11,26 @@ router.get("/", (req, res) => {
       console.error("Error al obtener las tareas:", err);
       return res.status(500).send("Error al obtener las tareas");
     }
+    res.json(results);
+  });
+});
+
+//obtener todas las tareas del usuario user_id
+router.get("/", (req, res) => {
+  const { user_id } = req.query; // Obtener el user_id de los query parameters
+
+  if (!user_id) {
+    return res.status(400).json({ message: "El user_id es obligatorio" });
+  }
+
+  const query = "SELECT * FROM Task WHERE user_id = ?";
+
+  db.query(query, [user_id], (err, results) => {
+    if (err) {
+      console.error("Error al obtener las tareas:", err);
+      return res.status(500).send("Error al obtener las tareas");
+    }
+
     res.json(results);
   });
 });

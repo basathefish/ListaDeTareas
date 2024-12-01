@@ -11,7 +11,7 @@ exports.register = async (req, res) => {
         //email es pk
         const [existingUser] = await db.promise().query('SELECT * FROM user WHERE email = ?', [email]);
         if (existingUser.length > 0) {
-            return res.status(400).json({ message: 'El usuario ya está registrado' });
+            return res.status(400).json({ message: 'Ese email ya se encuentra registrado' });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -32,6 +32,7 @@ exports.register = async (req, res) => {
 //Loggear usuario
 exports.login = async (req, res) => {
     const { email, password } = req.body;
+    console.log(email, password)
 
     try {
         const [rows] = await db.promise().query('SELECT * FROM user WHERE email = ?', [email]);

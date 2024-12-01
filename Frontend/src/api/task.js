@@ -1,3 +1,25 @@
+export const fetchTasks = async (user_id) => {
+  try {
+    const response = await fetch(`http://localhost:5000/api/tareas?user_id=${user_id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Error al obtener las tareas");
+    }
+
+    const tasks = await response.json();
+    console.log("Tareas obtenidas:", tasks);
+    return tasks;
+  } catch (error) {
+    console.error("Error al obtener las tareas:", error);
+    throw error;
+  }
+};
+
 export const addTask = async (event) => {
   event.preventDefault();
   const data = new FormData(event.target);
@@ -44,7 +66,7 @@ export const editTask = async (event) => {
 
   try {
     const response = await fetch("http://localhost:5000/api/tareas", {
-      method: "POST",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },

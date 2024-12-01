@@ -32,9 +32,9 @@ const LoginForm = () => {
         // Llamada al backend para validar las credenciales
         const response = await loginUser(email, password);
 
-        if (response.token) {
+        if (response && response.token) {
           // Guardar el token en localStorage
-          localStorage.setItem("authToken", response.token);
+          // localStorage.setItem("authToken", response.token);
 
           // Redirigir al usuario a la página principal
           console.log("Inicio de sesión exitoso");
@@ -43,7 +43,8 @@ const LoginForm = () => {
           setErrors({ general: "Credenciales incorrectas, por favor intente nuevamente." });
         }
       } catch (error) {
-        setErrors({ general: "Error al iniciar sesión, por favor intente nuevamente." });
+        console.error(error);
+        setErrors({ general: error.message });
       } finally {
         setIsLoading(false);
       }

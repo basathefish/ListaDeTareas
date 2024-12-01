@@ -1,15 +1,20 @@
 const express = require('express');
 const app = express();
-const db = require('./config/db');
 const cors = require('cors');
 
-app.use(cors());
+const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/userRoutes');
+const taskRoutes = require('./routes/taskRoutes');
+const categoryRoutes = require('./routes/categoryRoutes');
 
+app.use(cors());
 app.use(express.json());
 
-app.use('/api/tareas', require('./routes/taskRoutes')); //ruta para las tareas
-app.use('/api/usuarios', require('./routes/userRoutes')); //ruta para los usuarios
-app.use('/api/categorias', require('./routes/categoryRoutes')); //ruta para las categorías
+//rutas de la API
+app.use('/api/auth', authRoutes);
+app.use('/api/usuarios', userRoutes);
+app.use('/api/tareas', taskRoutes);
+app.use('/api/categorias', categoryRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

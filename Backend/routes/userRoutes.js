@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const db = require('../config/db');
 const { verifyToken } = require('../middleware/verifyToken');
-const userController = require('../controllers/userController');
 
 //Obtener todos los usuarios
 router.get('/', (req, res) => {
@@ -10,25 +9,6 @@ router.get('/', (req, res) => {
     db.query(query, (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
         res.json(results);
-    });
-});
-
-//Registrar usuario
-router.post('/register', userController.register);
-
-//Login
-router.post('/login', userController.login);
-
-//Obtener el perfil del usuario actual
-router.get('/profile', verifyToken, (req, res) => {
-    const userId = req.user.id;
-    const query = 'SELECT * FROM User WHERE id = ?';
-    db.query(query, [userId], (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
-        if (results.length === 0) {
-            return res.status(404).json({ error: 'Usuario no encontrado' });
-        }
-        res.json(results[0]);
     });
 });
 

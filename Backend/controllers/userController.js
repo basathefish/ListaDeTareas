@@ -41,13 +41,13 @@ exports.login = async (req, res) => {
 
         const user = rows[0];
 
-        //hash pass and compare
+        // Comparar la contraseña
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(400).json({ message: 'Contraseña incorrecta' });
         }
 
-        //Genero token para devolver
+        // Generar token
         const token = jwt.sign({ id: user.id, email: user.email }, SECRET_KEY);
 
         res.status(200).json({ message: 'Login exitoso', token });
@@ -55,4 +55,18 @@ exports.login = async (req, res) => {
         console.error(error);
         res.status(500).json({ message: 'Error al iniciar sesión' });
     }
+};
+
+//Obtener perfil del usuario
+exports.profile = async (req, res) => {
+    const userId = req.user.id;
+    const query = 'SELECT * FROM User WHERE id = ?';
+    
+    db.query(query, [userId], (err, results) => {
+        if (err) return res.status(500).json({ error: err.message });
+        if (results.length === 0) {
+            return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
+        res.json(results[0]);
+    });
 };

@@ -10,6 +10,7 @@ export const loginUser = async (email, password) => {
       });
   
       if (!response.ok) {
+        console.log(response)
         throw new Error("Error al iniciar sesión");
       }
   

@@ -34,7 +34,7 @@ const LoginForm = () => {
 
         if (response && response.token) {
           // Guardar el token en localStorage
-          // localStorage.setItem("authToken", response.token);
+          localStorage.setItem("authToken", response.token);
 
           // Redirigir al usuario a la página principal
           console.log("Inicio de sesión exitoso");

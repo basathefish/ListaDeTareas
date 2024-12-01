@@ -10,12 +10,14 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Auth />}>
+        {/* Ruta de autenticación */}
+        <Route path="/" element={<Auth />} />
+        
+        {/* Rutas principales */}
         <Route path="/home" element={<Home />} />
-          <Route path="form-agregar" element={<AddTask />} />
-          <Route path="/form-editar-tarea/:id" element={<EditTask/>} />
-          <Route path="/eliminar-tarea/:id" element={<DeleteTask />} />
-        </Route>
+        <Route path="/form-agregar" element={<AddTask />} />
+        <Route path="/form-editar-tarea/:id" element={<EditTask/>} />
+        <Route path="/eliminar-tarea/:id" element={<DeleteTask />} />
       </Routes>
     </Router>
   );

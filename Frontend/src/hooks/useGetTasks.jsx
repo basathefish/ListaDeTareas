@@ -8,14 +8,30 @@ export const useGetTasks = () => {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/tareas");
+        const token = localStorage.getItem("authToken");
+        if (!token) {
+          throw new Error("Token no encontrado en localStorage");
+        }
+
+        const response = await fetch("http://localhost:5000/api/tareas", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`, // Envía el token
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error al obtener las tareas: ${response.status}`);
+        }
+
+
         const data = await response.json();
         setTasks(data);
-        setLoading(false);
       } catch (error) {
         setError(error);
-        setLoading(false);
       } finally {
+        setLoading(false);
         console.log("fetchTasks done");
       }
     };
@@ -28,3 +44,5 @@ export const useGetTasks = () => {
     error,
   };
 };
+
+export default useGetTasks;

@@ -91,7 +91,7 @@ const RegisterForm = () => {
         type="email"
         name="email"
         className="bg-gray-600 text-lg font-normal w-full px-4 py-2 rounded outline-none"
-        placeholder="Introduce tu correo"
+        placeholder="Introduce tu Nombre"
         required
       />
       {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}

@@ -29,6 +29,18 @@ export const fetchTasks = async () => {
   }
 };
 
+const formatDateForMySQL = (date) => {
+  const d = new Date(date);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  const hours = String(d.getHours()).padStart(2, "0");
+  const minutes = String(d.getMinutes()).padStart(2, "0");
+  const seconds = String(d.getSeconds()).padStart(2, "0");
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+};
+
 export const addTask = async (event) => {
   event.preventDefault();
   const data = new FormData(event.target);
@@ -38,7 +50,7 @@ export const addTask = async (event) => {
     category_id: parseInt(data.get("category")),
     status: "pendiente",
     user_id: 1,
-    due_date: new Date().toISOString(),
+    due_date: formatDateForMySQL(new Date()),
   };
 
   try {
@@ -56,7 +68,7 @@ export const addTask = async (event) => {
 
     const result = await response.json();
     console.log("Tarea agregada:", result);
-    window.location.href = "/";
+    window.location.href = "/home";
   } catch (error) {
     console.error(error);
   }
@@ -70,7 +82,7 @@ export const editTask = async (event) => {
     description: data.get("description"),
     category_id: parseInt(data.get("category")),
     user_id: 1,
-    due_date: new Date().toISOString(),
+    due_date: new Date().formatDateForMySQL(new Date()),
   };
 
   try {
@@ -88,7 +100,7 @@ export const editTask = async (event) => {
 
     const result = await response.json();
 
-    window.location.href = "/";
+    window.location.href = "/home";
 
     console.log("Tarea agregada:", result);
   } catch (error) {

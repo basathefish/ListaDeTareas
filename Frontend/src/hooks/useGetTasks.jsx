@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import {getToken} from "../api/auth"
 
 export const useGetTasks = () => {
   const [tasks, setTasks] = useState([]);
@@ -47,6 +48,7 @@ export const useGetTasks = () => {
     } finally {
       setLoading(false); // Finaliza la carga
       console.log("fetchTasks ejecutado");
+      console.log(getToken())
     }
   }, []); 
   

@@ -1,8 +1,20 @@
 import Header from "../components/Header";
 import { AddButton } from "../components/AddButton";
 import ListTask from "../components/ListTasks";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { getToken } from "../api/auth";
+
 const Home = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = getToken();
+    if (!token) {
+      navigate("/");
+    }
+  }, [navigate]);
+
   return (
     <>
       <div className="bg-gray-950 relative grid grid-rows-[auto_1fr_auto] min-h-dvh">

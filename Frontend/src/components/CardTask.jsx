@@ -31,7 +31,6 @@ function CardTask({ task, onTaskUpdated }) {
       // Actualizar el estado local de la tarea
       setStatus(updatedData.status);
 
-      
       if (onTaskUpdated) onTaskUpdated();
     } catch (error) {
       console.error("Error al completar la tarea:", error);
@@ -41,26 +40,35 @@ function CardTask({ task, onTaskUpdated }) {
   return (
     <div
       className={`bg-gray-700 w-full md:w-[360px] p-4 rounded-xl flex flex-col justify-between gap-3 ${
-        status === "completada" ? "bg-green-700 opacity-80" : ""
+        status === "completada" ? "bg-green-950 opacity-80" : ""
       }`}
+      aria-labelledby={`task-title-${task.id}`}
     >
       {/* Nombre de la tarea */}
       <div className="flex justify-between items-center w-full">
         {/* Botón para marcar como completada */}
-        <button onClick={completeTask}>
+        <button
+          onClick={completeTask}
+          aria-label={status === "completada" ? "Marcar tarea como pendiente" : "Marcar tarea como completada"}
+        >
           <CheckCircleIcon
             className={`w-8 h-8 ${status === "completada" ? "text-green-300" : "text-gray-50"}`}
+            aria-hidden="true"
           />
         </button>
 
         <h3
+          id={`task-title-${task.id}`}
           className={`text-xl ${status === "completada" ? "line-through text-gray-400" : "text-gray-50"}`}
         >
           {task.title}
         </h3>
 
-        <Link to={`/form-editar-tarea/${task.id}`}>
-          <PencilSquareIcon className="w-8 h-8 text-gray-50" />
+        <Link
+          to={`/form-editar-tarea/${task.id}`}
+          aria-label="Editar tarea"
+        >
+          <PencilSquareIcon className="w-8 h-8 text-gray-50" aria-hidden="true" />
         </Link>
       </div>
 
@@ -72,7 +80,7 @@ function CardTask({ task, onTaskUpdated }) {
       {/* Fecha de creación */}
       <div className="flex justify-between items-center text-gray-50">
         <div className="flex items-center gap-2">
-          <ClockIcon className="w-5 h-5" />
+          <ClockIcon className="w-5 h-5" aria-hidden="true" />
           <span className="text-gray-50">Fecha de creación:</span>
         </div>
         <span className="bg-gray-500 w-28 h-9 text-center py-2 rounded">
@@ -83,11 +91,12 @@ function CardTask({ task, onTaskUpdated }) {
       {/* Categoría de la tarea */}
       <div className="flex justify-between items-center text-gray-50">
         <div className="flex items-center gap-2">
-          <TagIcon className="w-5 h-5" />
+          <TagIcon className="w-5 h-5" aria-hidden="true" />
           <span className="text-gray-50">Categoría:</span>
         </div>
         <div
           className={`bg-${categories[task.category_id].color} flex justify-center items-center w-28 h-9 text-center rounded`}
+          aria-label={`Categoría: ${categories[task.category_id].name}`}
         >
           {categories[task.category_id].icon}
           <span>{categories[task.category_id].name}</span>
@@ -97,9 +106,10 @@ function CardTask({ task, onTaskUpdated }) {
       {/* Botón para ELIMINAR la tarea */}
       <Link
         to={`/eliminar-tarea/${task.id}`}
-        className="flex justify-center items-center w-full h-9 rounded-md text-red-500 font-light"
+        className="flex justify-center items-center w-full h-9 rounded-md text-red-300 font-light"
+        aria-label="Eliminar tarea"
       >
-        <TrashIcon className="w-5 h-5" />
+        <TrashIcon className="w-5 h-5" aria-hidden="true" />
         Eliminar
       </Link>
     </div>

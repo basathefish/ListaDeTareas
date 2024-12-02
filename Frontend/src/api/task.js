@@ -89,7 +89,7 @@ export const editTask = async (event, idTask) => {
     category_id: parseInt(data.get("category")),
     due_date: formatDateForMySQL(new Date()),
   };
-
+  console.log("Category ID:", task.category_id);
   try {
     const token = getToken(); // Obtener el token desde el almacenamiento local
     if (!token) {

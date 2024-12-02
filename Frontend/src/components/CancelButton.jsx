@@ -4,6 +4,8 @@ const CancelButton = () => {
     <Link
       to={"/home"}
       className="bg-gray-700 text-center w-1/2 text-violet-400 px-4 py-2 rounded hover:bg-red-400 hover:text-red-700 transition-colors"
+      aria-label="Cancelar y volver al inicio" 
+      tabIndex={0} 
     >
       Cancelar
     </Link>

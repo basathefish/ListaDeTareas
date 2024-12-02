@@ -5,8 +5,8 @@ import { useGetTasks } from "../hooks/useGetTasks";
 function ListTasks() {
   const { tasks, loading, error, refetch } = useGetTasks(); 
 
-  if (loading) return <p className="text-gray-50">Cargando...</p>;
-  if (error) return <p className="text-red-500">Error al cargar las tareas: {error}</p>;
+  if (loading) return <p className="text-gray-50" role="status" aria-live="polite">Cargando...</p>;
+  if (error) return <p className="text-red-500" role="alert">Error al cargar las tareas: {error}</p>;
 
   // Función para recargar la lista de tareas cuando se actualice una
   const handleTaskUpdated = () => {

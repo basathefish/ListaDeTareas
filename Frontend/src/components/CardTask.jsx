@@ -95,11 +95,11 @@ function CardTask({ task, onTaskUpdated }) {
           <span className="text-gray-50">Categoría:</span>
         </div>
         <div
-          className={`bg-${categories[task.category_id].color} flex justify-center items-center w-28 h-9 text-center rounded`}
-          aria-label={`Categoría: ${categories[task.category_id].name}`}
+          className={`bg-${categories[task.category_id-1].color} flex justify-center items-center w-28 h-9 text-center rounded`}
+          aria-label={`Categoría: ${categories[task.category_id-1].name}`}
         >
-          {categories[task.category_id].icon}
-          <span>{categories[task.category_id].name}</span>
+          {categories[task.category_id-1].icon}
+          <span>{categories[task.category_id-1].name}</span>
         </div>
       </div>
 

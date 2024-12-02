@@ -1,22 +1,17 @@
-import { useState } from "react";
 import CardTask from "../components/CardTask";
 import ListEmpty from "./ListEmpty";
+import { useGetTasks } from "../hooks/useGetTasks";
 
 function ListTasks() {
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      title: "Tarea 1",
-      description: "Descripción de la tarea 1",
-      category: "Personal",
-    },
-    {
-      id: 2,
-      title: "Tarea 2",
-      description: "Descripción de la tarea 1",
-      category: "Personal",
-    }
-  ]);
+  const { tasks, loading, error, refetch } = useGetTasks(); 
+
+  if (loading) return <p className="text-gray-50" role="status" aria-live="polite">Cargando...</p>;
+  if (error) return <p className="text-red-500" role="alert">Error al cargar las tareas: {error}</p>;
+
+  // Función para recargar la lista de tareas cuando se actualice una
+  const handleTaskUpdated = () => {
+    refetch(); 
+  };
 
   return (
     <>
@@ -25,7 +20,11 @@ function ListTasks() {
       ) : (
         <div className="flex flex-wrap w-full gap-2 px-5">
           {tasks.map((task) => (
-            <CardTask key={task.id} task={task} />
+            <CardTask 
+              key={task.id} 
+              task={task} 
+              onTaskUpdated={handleTaskUpdated} 
+            />
           ))}
         </div>
       )}

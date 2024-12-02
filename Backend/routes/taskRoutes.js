@@ -16,9 +16,9 @@ router.get("/all", (req, res) => {
   });
 });
 
+//obtener todas las tareas de x usuario
 router.get("/", verifyToken, (req, res) => {
   const user_id = req.user.id;
-  console.log(user_id)
 
   const query = "SELECT * FROM Task WHERE user_id = ?";
 
@@ -51,9 +51,11 @@ router.get("/:id", (req, res) => {
 });
 
 //agregar una nueva tarea
-router.post("/", (req, res) => {
-  const { title, description, status, due_date, user_id, category_id } =
-    req.body;
+router.post("/", verifyToken, (req, res) => {
+  const { title, description, status, due_date, category_id } = req.body;
+  const user_id = req.user.id; //Extraer user_id del token procesado por el middleware
+  console.log(user_id)
+  console.log(req.user)
 
   const query = `
     INSERT INTO Task (title, description, status, due_date, user_id, category_id)
@@ -72,11 +74,13 @@ router.post("/", (req, res) => {
   );
 });
 
+
 //actualizar una tarea
-router.put("/:id", (req, res) => {
+router.put("/:id", verifyToken, (req, res) => {
   const { id } = req.params;
-  const { title, description, status, due_date, user_id, category_id } =
+  const { title, description, status, due_date, category_id } =
     req.body;
+    user_id = req.user.id;
 
   const query = `
     UPDATE Task
@@ -99,7 +103,7 @@ router.put("/:id", (req, res) => {
 });
 
 //eliminar una tarea
-router.delete("/:id", (req, res) => {
+router.delete("/:id", verifyToken, (req, res) => {
   const { id } = req.params;
 
   const query = "DELETE FROM Task WHERE id = ?";

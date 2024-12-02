@@ -49,20 +49,26 @@ export const addTask = async (event) => {
     description: data.get("description"),
     category_id: parseInt(data.get("category")),
     status: "pendiente",
-    user_id: 1,
     due_date: formatDateForMySQL(new Date()),
   };
 
   try {
+    const token = getToken(); // Obtener el token desde el almacenamiento local
+    if (!token) {
+      throw new Error("No se encontró un token de autenticación");
+    }
+
     const response = await fetch("http://localhost:5000/api/tareas", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // Incluir el token en los encabezados de autorización
       },
       body: JSON.stringify(task),
     });
 
     if (!response.ok) {
+      console.log(response)
       throw new Error("Error al agregar la tarea");
     }
 
@@ -74,6 +80,7 @@ export const addTask = async (event) => {
   }
 };
 
+
 export const editTask = async (event) => {
   event.preventDefault();
   const data = new FormData(event.target);
@@ -81,7 +88,6 @@ export const editTask = async (event) => {
     title: data.get("title"),
     description: data.get("description"),
     category_id: parseInt(data.get("category")),
-    user_id: 1,
     due_date: new Date().formatDateForMySQL(new Date()),
   };
 
@@ -90,6 +96,7 @@ export const editTask = async (event) => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(task),
     });
@@ -112,6 +119,7 @@ export const deleteTask = async (id) => {
   try {
     const response = await fetch(`http://localhost:5000/api/tareas/${id}`, {
       method: "DELETE",
+      Authorization: `Bearer ${token}`,
     });
 
     if (!response.ok) {

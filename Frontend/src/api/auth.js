@@ -19,7 +19,7 @@ export const loginUser = async (email, password) => {
       
       if (result.token) {
         // console.log("Usuario logueado:", result);
-        localStorage.setItem("authToken", result.token);
+        localStorage.setItem("token", result.token);
         return result;
       } else {
         return { error: "Credenciales incorrectas" };
@@ -56,7 +56,7 @@ export const loginUser = async (email, password) => {
   
   // Función para obtener el token guardado
   export const getToken = () => {
-    return localStorage.getItem("authToken");
+    return localStorage.getItem("token");
   };
   
 

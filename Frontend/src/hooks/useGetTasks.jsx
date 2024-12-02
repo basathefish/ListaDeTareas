@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { fetchTasks } from "../api/task";
 
 export const useGetTasks = () => {
   const [tasks, setTasks] = useState([]);
@@ -6,36 +7,26 @@ export const useGetTasks = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchTasks = async () => {
+    const fetchData = async () => {
       try {
-        const token = localStorage.getItem("authToken");
-        if (!token) {
-          throw new Error("Token no encontrado en localStorage");
+        const tasks = await fetchTasks(); // Llama a la función fetchTasks de api/task.js
+        if (tasks.length > 0) {
+          console.log(tasks);
+          setTasks(tasks);
+        } else {
+          console.log("El usuario no tiene tareas");
+          setTasks([]);
         }
-
-        const response = await fetch("http://localhost:5000/api/tareas", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`, // Envía el token
-            "Content-Type": "application/json",
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error(`Error al obtener las tareas: ${response.status}`);
-        }
-
-
-        const data = await response.json();
-        setTasks(data);
       } catch (error) {
+        console.error("No se pudieron obtener las tareas:", error);
         setError(error);
       } finally {
         setLoading(false);
         console.log("fetchTasks done");
       }
     };
-    fetchTasks();
+
+    fetchData(); // Ejecuta la función fetchData
   }, []);
 
   return {

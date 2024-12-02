@@ -29,7 +29,7 @@ export const fetchTasks = async () => {
   }
 };
 
-const formatDateForMySQL = (date) => {
+export const formatDateForMySQL = (date) => {
   const d = new Date(date);
   const year = d.getFullYear();
   const month = String(d.getMonth() + 1).padStart(2, "0");
@@ -148,5 +148,29 @@ export const deleteTask = async (id) => {
     window.location.href = "/home";
   } catch (error) {
     console.error("Error al eliminar la tarea:", error);
+  }
+};
+
+export const updateTask = async (id, data) => {
+  try {
+    const token = getToken(); 
+    if (!token) {
+      throw new Error("No se encontró un token de autenticación");
+    }
+
+    const response = await fetch(`http://localhost:5000/api/tareas/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, 
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) throw new Error("Error al actualizar la tarea");
+    return await response.json();
+  } catch (error) {
+    console.error("Error en updateTask:", error);
+    throw error;
   }
 };

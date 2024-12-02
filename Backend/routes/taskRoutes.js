@@ -79,9 +79,6 @@ router.put("/:id", verifyToken, (req, res) => {
   const { title, description, status, due_date, category_id } = req.body;
   const user_id = req.user.id; // ID del usuario autenticado
   const newStatus = status === "pendiente" ? "completada" : status;
-  
-  console.log("ID de la tarea a editar:", id);
-  console.log("Datos recibidos para actualizar:", req.body);
 
   const query = `
     UPDATE Task

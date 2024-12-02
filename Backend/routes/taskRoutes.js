@@ -54,8 +54,6 @@ router.get("/:id", (req, res) => {
 router.post("/", verifyToken, (req, res) => {
   const { title, description, status, due_date, category_id } = req.body;
   const user_id = req.user.id; //Extraer user_id del token procesado por el middleware
-  console.log(user_id)
-  console.log(req.user)
 
   const query = `
     INSERT INTO Task (title, description, status, due_date, user_id, category_id)
@@ -77,27 +75,34 @@ router.post("/", verifyToken, (req, res) => {
 
 //actualizar una tarea
 router.put("/:id", verifyToken, (req, res) => {
-  const { id } = req.params;
-  const { title, description, status, due_date, category_id } =
-    req.body;
-    user_id = req.user.id;
+  const { id } = req.params; // ID de la tarea
+  const { title, description, status, due_date, category_id } = req.body;
+  const user_id = req.user.id; // ID del usuario autenticado
+
+  console.log("ID de la tarea a editar:", id);
+  console.log("Datos recibidos para actualizar:", req.body);
 
   const query = `
     UPDATE Task
-    SET title = ?, description = ?, status = ?, due_date = ?, user_id = ?, category_id = ?
-    WHERE id = ?`;
+    SET title = ?, description = ?, status = ?, due_date = ?, category_id = ?
+    WHERE id = ? AND user_id = ?`;
 
   db.query(
     query,
-    [title, description, status, due_date, user_id, category_id, id],
+    [title, description, status, due_date, category_id, id, user_id],
     (err, result) => {
       if (err) {
         console.error("Error al actualizar la tarea:", err);
-        return res
-          .status(500)
-          .send({ message: "Error al actualizar la tarea" });
+        return res.status(500).json({ message: "Error al actualizar la tarea" });
       }
-      res.send({ message: "Tarea actualizada con éxito" });
+
+      if (result.affectedRows === 0) {
+        return res.status(404).json({
+          message: "Tarea no encontrada o no autorizada para actualizar",
+        });
+      }
+
+      res.status(200).json({ message: "Tarea actualizada con éxito" });
     }
   );
 });

@@ -11,7 +11,6 @@ const verifyToken = (req, res, next) => {
     const tokenWithoutBearer = token.startsWith('Bearer ') ? token.slice(7) : token;
 
     jwt.verify(tokenWithoutBearer, SECRET_KEY, (err, decoded) => {
-        console.log(tokenWithoutBearer)
         if (err) {
             return res.status(401).json({ error: 'Invalid or expired token' });
         }

@@ -4,8 +4,16 @@ import { categories } from "../utils/categories";
 import { addTask, editTask } from "../api/task";
 
 function FormTask({ task }) {
-
-  const handleSubmit = task?.id ? editTask : addTask;
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const idTask = task?.id; // Obtener el id de la tarea desde el prop 'task'
+    if (idTask) {
+      editTask(event, idTask); // Pasar idTask a la función editTask
+    } else {
+      // Si no hay tarea, es agregar una nueva
+      addTask(event);  // Llamamos a la función para agregar tarea
+    }
+  };
 
   return (
     <form

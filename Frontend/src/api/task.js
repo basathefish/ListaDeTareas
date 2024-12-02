@@ -80,19 +80,28 @@ export const addTask = async (event) => {
   }
 };
 
-
-export const editTask = async (event) => {
+export const editTask = async (event, idTask) => {
   event.preventDefault();
   const data = new FormData(event.target);
   const task = {
     title: data.get("title"),
     description: data.get("description"),
     category_id: parseInt(data.get("category")),
-    due_date: new Date().formatDateForMySQL(new Date()),
+    due_date: formatDateForMySQL(new Date()),
   };
 
   try {
-    const response = await fetch("http://localhost:5000/api/tareas", {
+    const token = getToken(); // Obtener el token desde el almacenamiento local
+    if (!token) {
+      throw new Error("No se encontró un token de autenticación");
+    }
+
+    if (isNaN(idTask)) {
+      console.error("ID no válido");
+      return;
+    }
+
+    const response = await fetch(`http://localhost:5000/api/tareas/${idTask}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -102,33 +111,42 @@ export const editTask = async (event) => {
     });
 
     if (!response.ok) {
-      throw new Error("Error al agregar la tarea");
+      throw new Error("Error al editar la tarea");
     }
 
     const result = await response.json();
+    window.location.href = "/home"; // Redirige después de la edición
 
-    window.location.href = "/home";
-
-    console.log("Tarea agregada:", result);
+    console.log("Tarea editada:", result);
   } catch (error) {
     console.error(error);
   }
 };
 
+
+
 export const deleteTask = async (id) => {
   try {
+    const token = getToken(); // Obtener el token desde el almacenamiento local
+    if (!token) {
+      throw new Error("No se encontró un token de autenticación");
+    }
     const response = await fetch(`http://localhost:5000/api/tareas/${id}`, {
       method: "DELETE",
-      Authorization: `Bearer ${token}`,
+      headers: {
+        Authorization: `Bearer ${token}`, // Incluir el token en los encabezados
+        "Content-Type": "application/json",
+      },
     });
 
     if (!response.ok) {
-      throw new Error("Error al eliminar la tarea");
+      const errorResponse = await response.json();
+      throw new Error(errorResponse.message || "Error al eliminar la tarea");
     }
 
-    window.location.href = "/";
     console.log("Tarea eliminada:", id);
+    window.location.href = "/home";
   } catch (error) {
-    console.error(error);
+    console.error("Error al eliminar la tarea:", error);
   }
 };
